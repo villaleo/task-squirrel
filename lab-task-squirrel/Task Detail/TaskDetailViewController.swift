@@ -11,16 +11,12 @@ import MapKit
 // TODO: Import PhotosUI
 
 class TaskDetailViewController: UIViewController {
-
     @IBOutlet private weak var completedImageView: UIImageView!
     @IBOutlet private weak var completedLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var attachPhotoButton: UIButton!
-
-    // MapView outlet
     @IBOutlet private weak var mapView: MKMapView!
-
     var task: Task!
 
     override func viewDidLoad() {
@@ -32,8 +28,6 @@ class TaskDetailViewController: UIViewController {
 
         // UI Candy
         mapView.layer.cornerRadius = 12
-
-
         updateUI()
         updateMapView()
     }
@@ -42,7 +36,6 @@ class TaskDetailViewController: UIViewController {
     private func updateUI() {
         titleLabel.text = task.title
         descriptionLabel.text = task.description
-
         let completedImage = UIImage(systemName: task.isComplete ? "circle.inset.filled" : "circle")
 
         // calling `withRenderingMode(.alwaysTemplate)` on an image allows for coloring the image via it's `tintColor` property.

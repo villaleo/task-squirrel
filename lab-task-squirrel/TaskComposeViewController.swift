@@ -8,20 +8,18 @@
 import UIKit
 
 class TaskComposeViewController: UIViewController {
-
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var descriptionField: UITextField!
-
     // When a new task is created, this closure is called, passing in the newly created task.
     var onComposeTask: ((Task) -> Void)? = nil
-
+    
+    // MARK: UIViewController Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
+    // MARK: IBActions
     @IBAction func didTapDoneButton(_ sender: Any) {
-
         guard let title = titleField.text,
               let description = descriptionField.text,
               !title.isEmpty,
@@ -44,11 +42,11 @@ class TaskComposeViewController: UIViewController {
         let alertController = UIAlertController(
             title: "Oops...",
             message: "Both title and description fields must be filled out",
-            preferredStyle: .alert)
+            preferredStyle: .alert
+        )
 
         let okAction = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(okAction)
-
         present(alertController, animated: true)
     }
 }

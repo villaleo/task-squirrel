@@ -9,7 +9,6 @@ import UIKit
 import MapKit
 
 class TaskAnnotationView: MKAnnotationView {
-
     // Reuse identifier used for dequeueing the view in map view delegate method.
     // 💡 Similar to table view reuse identifier
     static var identifier = "TaskAnnotationView"
