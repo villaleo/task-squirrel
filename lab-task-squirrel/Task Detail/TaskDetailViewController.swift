@@ -27,7 +27,6 @@ class TaskDetailViewController: UIViewController {
         )
         mapView.delegate = self
 
-        // UI Candy
         mapView.layer.cornerRadius = 12
         updateUI()
         updateMapView()
@@ -87,13 +86,8 @@ class TaskDetailViewController: UIViewController {
     }
 }
 
-// TODO: Conform to PHPickerViewControllerDelegate + implement required method(s)
-
-// TODO: Conform to MKMapKitDelegate + implement mapView(_:viewFor:) delegate method.
-
-// Helper methods to present various alerts
+// MARK: Helper methods to present various alerts
 extension TaskDetailViewController {
-
     /// Presents an alert notifying user of photo library access requirement with an option to go to Settings in order to update status.
     func presentGoToSettingsAlert() {
         let alertController = UIAlertController (
