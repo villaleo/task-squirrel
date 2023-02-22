@@ -69,8 +69,14 @@ class TaskDetailViewController: UIViewController {
     }
 
     func updateMapView() {
-        // TODO: Set map viewing region and scale
-
+        guard let imageLocation = task.imageLocation else { return }
+        let coordinate = imageLocation.coordinate
+        let delta: CLLocationDegrees = 0.01
+        let region: MKCoordinateRegion = .init(
+            center: coordinate,
+            span: .init(latitudeDelta: delta, longitudeDelta: delta)
+        )
+        mapView.setRegion(region, animated: true)
         // TODO: Add annotation to map view
     }
 }
