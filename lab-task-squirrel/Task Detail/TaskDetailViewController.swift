@@ -118,9 +118,18 @@ extension TaskDetailViewController {
     }
 }
 
+// MARK: Conform TaskDetailViewController to PHPickerViewControllerDelegate
 extension TaskDetailViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        //TODO: This is where we'll get the picked image in the next step...
+        picker.dismiss(animated: true)
+        let result = results.first
+        guard let assetID = result?.assetIdentifier, let location = PHAsset.fetchAssets(
+            withLocalIdentifiers: [assetID],
+            options: nil
+        ).firstObject?.location else {
+            return
+        }
+        print("Image location coordinate: \(location.coordinate)")
     }
     
     private func presentImagePicker() {
