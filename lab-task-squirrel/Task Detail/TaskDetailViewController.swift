@@ -123,13 +123,31 @@ extension TaskDetailViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         let result = results.first
+        
         guard let assetID = result?.assetIdentifier, let location = PHAsset.fetchAssets(
             withLocalIdentifiers: [assetID],
             options: nil
         ).firstObject?.location else {
             return
         }
-        print("Image location coordinate: \(location.coordinate)")
+        guard let provider = result?.itemProvider,
+            provider.canLoadObject(ofClass: UIImage.self) else {
+            return
+        }
+        
+        provider.loadObject(ofClass: UIImage.self, completionHandler: { [weak self] object, error in
+            if let error = error {
+                DispatchQueue.main.async { [weak self] in self?.showAlert(for: error) }
+            }
+            guard let image = object as? UIImage else { return }
+            
+            // UI updates should be done on main thread
+            DispatchQueue.main.async {
+                self?.task.set(image, with: location)
+                self?.updateUI()
+                self?.updateMapView()
+            }
+        })
     }
     
     private func presentImagePicker() {
