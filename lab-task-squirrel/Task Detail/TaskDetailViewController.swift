@@ -20,10 +20,12 @@ class TaskDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // TODO: Register custom annotation view
-
-        // TODO: Set mapView delegate
+        
+        mapView.register(
+            TaskAnnotationView.self,
+            forAnnotationViewWithReuseIdentifier: TaskAnnotationView.identifier
+        )
+        mapView.delegate = self
 
         // UI Candy
         mapView.layer.cornerRadius = 12
@@ -168,5 +170,19 @@ extension TaskDetailViewController: PHPickerViewControllerDelegate {
         let picker: PHPickerViewController = .init(configuration: configuration)
         picker.delegate = self
         present(picker, animated: true)
+    }
+}
+
+extension TaskDetailViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard let annotationView = mapView.dequeueReusableAnnotationView(
+            withIdentifier: TaskAnnotationView.identifier,
+            for: annotation
+        ) as? TaskAnnotationView else {
+            fatalError("Unable to deque TaskAnnotationView")
+        }
+        
+        annotationView.configure(with: task.image)
+        return annotationView
     }
 }
