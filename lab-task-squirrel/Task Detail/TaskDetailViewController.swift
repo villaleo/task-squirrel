@@ -7,8 +7,7 @@
 
 import UIKit
 import MapKit
-
-// TODO: Import PhotosUI
+import PhotosUI
 
 class TaskDetailViewController: UIViewController {
     @IBOutlet private weak var completedImageView: UIImageView!
@@ -51,13 +50,22 @@ class TaskDetailViewController: UIViewController {
     }
 
     @IBAction func didTapAttachPhotoButton(_ sender: Any) {
-        // TODO: Check and/or request photo library access authorization.
-
-    }
-
-    private func presentImagePicker() {
-        // TODO: Create, configure and present image picker.
-
+        if PHPhotoLibrary.authorizationStatus(for: .readWrite) == .authorized {
+            presentImagePicker()
+            return
+        }
+        PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: { [weak self] status in
+            switch status {
+            case .authorized:
+                DispatchQueue.main.async {
+                    self?.presentImagePicker()
+                }
+            default:
+                DispatchQueue.main.async {
+                    self?.presentGoToSettingsAlert()
+                }
+            }
+        })
     }
 
     func updateMapView() {
@@ -107,5 +115,21 @@ extension TaskDetailViewController {
         alertController.addAction(action)
 
         present(alertController, animated: true)
+    }
+}
+
+extension TaskDetailViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        //TODO: This is where we'll get the picked image in the next step...
+    }
+    
+    private func presentImagePicker() {
+        var configuration: PHPickerConfiguration = .init(photoLibrary: PHPhotoLibrary.shared())
+        configuration.filter = .images
+        configuration.preferredAssetRepresentationMode = .current
+        configuration.selectionLimit = 1
+        let picker: PHPickerViewController = .init(configuration: configuration)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 }
