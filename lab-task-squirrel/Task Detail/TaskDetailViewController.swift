@@ -77,7 +77,11 @@ class TaskDetailViewController: UIViewController {
             span: .init(latitudeDelta: delta, longitudeDelta: delta)
         )
         mapView.setRegion(region, animated: true)
-        // TODO: Add annotation to map view
+        
+        let annotation: MKPointAnnotation = .init()
+        annotation.coordinate = coordinate
+        annotation.title = task.title
+        mapView.addAnnotation(annotation)
     }
 }
 
